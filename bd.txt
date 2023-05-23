@@ -1,0 +1,57 @@
+CREATE DATABASE projetjava;
+use projetjava;
+
+CREATE TABLE Enseignant (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(50) NOT NULL,
+    prenom VARCHAR(50) NOT NULL,
+    telephone VARCHAR(20) NOT NULL,
+    num_matricule VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL
+);
+
+
+CREATE TABLE Matiere (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    intitule VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Classe (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    intitule VARCHAR(100) NOT NULL,
+    code VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE AnneeScolaire (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    code VARCHAR(20) NOT NULL,
+    date_debut DATE NOT NULL,
+    date_fin DATE NOT NULL
+);
+
+CREATE TABLE Cours (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_matiere INT NOT NULL,
+    id_enseignant INT NOT NULL,
+    id_classe INT NOT NULL,
+    id_annee_scolaire INT NOT NULL,
+    FOREIGN KEY (id_matiere) REFERENCES Matiere(id),
+    FOREIGN KEY (id_enseignant) REFERENCES Enseignant(id),
+    FOREIGN KEY (id_classe) REFERENCES Classe(id),
+    FOREIGN KEY (id_annee_scolaire) REFERENCES AnneeScolaire(id),
+    UNIQUE (id_enseignant, id_annee_scolaire)
+);
+
+
+CREATE TABLE EmploiDuTemps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_enseignant INT NOT NULL,
+    id_cours INT NOT NULL,
+    heure_debut TIME NOT NULL,
+    heure_fin TIME NOT NULL,
+    salle VARCHAR(50) NOT NULL,
+    FOREIGN KEY (id_enseignant) REFERENCES Enseignant(id),
+    FOREIGN KEY (id_cours) REFERENCES Cours(id),
+    UNIQUE (heure_debut, salle)
+);
